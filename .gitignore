@@ -1,0 +1,11 @@
+.coverage
+.idea
+.pytest_cache
+.vscode
+__pycache__
+htmlcov
+venv
+.venv
+*.db
+*.egg-info
+.DS_Store

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='javascript/scripts.js') }}"></script>
+  {% endblock %}
+</head>
+
+<body>
+  <div class="container">
+    <nav>
+      <div class="navbar">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
+          <h1>Team Socks</h1>
+        </div>
+        <ul>
+          {% if 'username' in session %}
+            <h3>Welcome, {{ session['username'] }}</h3>
+            <li>
+              <a href="{{ url_for('profile_bp.profile') }}">
+                <i class="fas fa-user"></i>
+                <span class="nav-item">Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('auth_bp.logout') }}" class="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="nav-item">Log out</span>
+              </a>
+            </li>
+          {% else %}
+            <li>
+              <a href="{{ url_for('auth_bp.login') }}" class="login">
+                <i class="fas fa-sign-in-alt"></i>
+                <span class="nav-item">Log in</span>
+            </li>
+            <li>
+              <a href="{{ url_for('auth_bp.register') }}" class="signup">
+                <i class="fas fa-user-plus"></i>
+                <span class="nav-item">Sign up</span>
+              </a>
+            </li>
+          {% endif %}
+          <div class="sep-bar"></div>
+          <li>
+            <a href="{{ url_for('home') }}">
+              <i class="fas fa-home"></i>
+              <span class="nav-item">Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('games_bp.browse_games') }}">
+              <i class="fas fa-gamepad"></i>
+              <span class="nav-item">Games</span>
+            </a>
+            <li class="dropdown">
+              <div class="dropdown-box">
+                <a href="#" class="dropdown-btn">
+                  <i class="fas fa-tags"></i>
+                  <span class="nav-item">Genres</span>
+                  <i class="fas fa-caret-down"></i>
+                </a>
+                <div class="dropdown-content">
+                  {% for genre in all_genres %}
+                  <a href="{{ url_for('games_bp.browse_games', genre=genre) }}">{{ genre }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </li>             
+          <div class="nav-items"> <!-- Wrap the items you want to move down here -->
+            <!-- <li>
+              <a href="#">
+                <i class="fas fa-star"></i>
+                <span class="nav-item">Reviews</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fas fa-users"></i>
+                <span class="nav-item">Our Team</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fas fa-question-circle"></i>
+                <span class="nav-item">Help</span>
+              </a>
+            </li> -->
+          </div> 
+        </ul>
+      </div>
+    </nav>
+    <section class="main">
+      {% block heading %}
+      {% endblock %}
+      <div class="main-body">
+        {% block content %}
+        {% endblock %}
+        <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Team Socks Logo">
+                <h3>Team Socks</h3>
+            </div><span class="spacer"></span>
+            <div class="footer-links">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('games_bp.browse_games') }}">Games</a>
+                <!-- <a href="#">Reviews</a>
+                <a href="#">Our Team</a>
+                <a href="#">Help</a> -->
+            </div>
+            <!-- <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-twitch"></i></a>
+                <a href="#"><i class="fab fa-steam"></i></a>
+            </div> -->
+            <div class="footer-copyright">
+                &copy; 2023 Team Socks. All rights reserved.
+            </div>
+        </div>
+    </footer>
+      </div>
+  </section>
+  </div>
+</body>
+</html>

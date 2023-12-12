@@ -1,0 +1,83 @@
+
+:root {
+    --col-button: #8a2be2;
+    --col-button-text: #ffffff;
+    --col-button-border: #5b1c95;
+
+    --col-button-hover: #7a1ac9;
+    --col-button-text-hover: #ffffff;
+    --col-button-border-hover: #4b107c;
+
+    --col-button-inactive: #c0c0c0;
+    --col-button-text-inactive: #ffffff;
+    --col-button-border-inactive: #a0a0a0;
+}
+
+.chip {
+    display: inline-block;
+    padding: 0.1em 1em 0.1em 1em;
+    border: 1px solid;
+    border-radius: 1em;
+    margin: 4px;
+    box-shadow: 2px 2px 1px 0px var(--col-shadow);
+}
+
+.chip i {
+    margin-right: 0.3em;
+}
+
+/* General information chip */
+.info-chip {
+    background-color: #17a7fa;
+    border-color: #006caa;
+    color: #ffffff;
+}
+
+/* Chip showing the price of games, has a dollar sign icon */
+.price-chip {
+    background-color: #33af45;
+    border-color: #2c943b;
+    color: #effded;
+}
+.price-chip i {
+    color: #1f7a2f;
+}
+
+/* Chip showing the popularity of games, has a thumbs up icon */
+.recommendation-chip {
+    background-color: #e6a225;
+    border-color: #cc8d27;
+    color: #fdf6eb;
+}
+.recommendation-chip i {
+    color: #af7f05;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.1em 1em 0.1em 1em;
+    border: 2px solid var(--col-button-border);
+    border-radius: 1em;
+    margin: 4px;
+    color: var(--col-button-text);
+    box-shadow: 2px 2px 1px 0px var(--col-shadow);
+    background-color: var(--col-button);
+    cursor: pointer;
+}
+
+.button:hover {
+    border-color: var(--col-button-border-hover);
+    background-color: var(--col-button-hover);
+    color: var(--col-button-text-hover);
+}
+
+.inactive-button {
+    display: inline-block;
+    padding: 0.1em 1em 0.1em 1em;
+    border: 2px solid var(--col-button-border-inactive);
+    border-radius: 1em;
+    margin: 4px;
+    color: var(--col-button-inactive-text);
+    box-shadow: 2px 2px 1px 0px var(--col-shadow);
+    background-color: var(--col-button-inactive);
+}

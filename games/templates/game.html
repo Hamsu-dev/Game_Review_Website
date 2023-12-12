@@ -1,0 +1,227 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <title>{{ game.title }} | CS235 Game Library</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chip.css')}}"/>
+{% endblock %}
+
+
+{% block heading %}
+    <!-- <img src="{{ game.image_url }}" alt="Header image of game" class="game-image"> -->
+{% endblock %}
+
+
+{% block content %}
+
+<!-- If there are any errors in the form, it should be shown be default -->
+{% if form.errors %}
+<section id="review-modal">
+{% else %}
+<section class="hidden" id="review-modal">
+{% endif %}
+    <div id="review-box">
+        <div class="flex">
+            <span>{{ game.title }}</span>
+            <button class="btn-close">⨉</button>
+        </div>
+        <p>Please keep in mind that your review will be public, and everyone will be able to see your username, rating, and the comment associated with your review.</p>
+        <div class="form-wrapper">
+            <form method="POST">
+                {{form.csrf_token}}
+                <div id="rating-interactive-stars-container">
+                    <span class="stars" id="rating-interactive-stars">☆ ☆ ☆ ☆ ☆ </span>
+                </div>
+                <input type="hidden" name="rating" id="rating-value" value="0">
+                {% if form.rating.errors %}
+                    <ul class="errors">
+        	            {% for error in form.rating.errors %}
+        		            <li>{{error}}</li>
+                        {% endfor %}
+                        </ul>
+                {% endif %}
+                <br>
+                <div class="form-field">
+                    {{form.comment.label}}
+                    </br>
+                    {{form.comment(size = 100, placeholder="What was your experience playing the game like? What made you give it the rating you did?", class="textarea", cols="50", rows="6", wrap="hard")}}
+                    {% if form.comment.errors %}
+                        <ul class="errors">
+        	            {% for error in form.comment.errors %}
+        		            <li>{{error}}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                {{ form.submit(id="review-submit") }}
+            </form>
+        </div>
+    </div>
+</section>
+
+<div id="game-header">
+    <img src="{{ game.image_url }}" alt="Header image of game" class="game-image">
+</div>
+
+<div id="game-info">
+    <h1>{{ game.title }}</h1>
+
+    <!-- info chips -->
+    <div class="chip price-chip"><i class="fas fa-dollar-sign"></i>{{ game.price }} USD</div>
+    <div class="chip recommendation-chip"><i class="fas fa-thumbs-up"></i>{{ game.recommendations }} Recommend This</div>
+    {% if in_wishlist %}
+        <form action="{{ url_for('game_bp.remove_from_wishlist', game_id = game_id) }}" method="POST">
+            {{ form.csrf_token }}
+            <button type="submit" class="chip button">Remove from wishlist</button>
+        </form>
+    {% else %}
+        <form action="{{ url_for('game_bp.add_to_wishlist', game_id = game_id) }}" method="POST">
+            {{ form.csrf_token }}
+            <button type="submit" class="chip button">Add to wishlist</button>
+        </form>
+    {% endif %}
+</div>
+
+<!-- description -->
+<h2><i class="fas fa-info-circle header-icon"></i>About</h2>
+<div id="game-about"><i>{{ game.description }}</i></div>
+
+<!-- details -->
+<ul id="game-details">
+    <li><i class="fas fa-calendar"></i><strong>Release Date:</strong> {{ game.release_date }}</li>
+    <li><i class="fas fa-gamepad"></i><strong>Genres:</strong> 
+        {% for genre in game.genres %}
+            {{ genre.genre_name }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </li>
+    <li><i class="fas fa-trophy"></i><strong>Achievements:</strong> {{ game.achievements }}</li>
+    <li><i class="fas fa-desktop"></i><strong>Platforms:</strong> {{ platform_support }}</li>
+    <li><i class="fas fa-gamepad"></i><strong>Controller:</strong> {{ controller_support }}</li>
+    <li><i class="fas fa-cloud"></i><strong>Steam Cloud:</strong> {{ cloud_support }}</li>
+    <li><i class="fas fa-user"></i><strong>Developers:</strong> {{ game.developer }}</li>
+    <li><i class="fas fa-user"></i><strong>Publishers:</strong> {{ game.publisher.publisher_name }}</li>
+</ul>
+
+<!-- reviews -->
+<h2><i class="fas fa-star header-icon"></i>Reviews</h2>
+{% if 'username' in session %}
+    {% if already_reviewed %}
+        <p>You have already reviewed this game</p>
+    {% else %}
+        <a class="chip button" id="review-button" onclick="openModal()">Write a review</a>
+    {% endif %}
+{% else %}
+    <a class="chip button" id="review-button" href="{{ url_for('auth_bp.login') }}">Write a review</a>
+{% endif %}
+{% if game.reviews|length == 0 %}
+    <p>No reviews yet. Be the first to write one!</p>
+{% else %}
+    {% set avg_rating = game.reviews|sum(attribute='rating') / game.reviews|length %}
+    <div id="avg-ratings">
+        <div id="average-rating-container">
+            <h2>{{ avg_rating|round(1) }}</h2>
+            <span class="stars">{{ star_rating(avg_rating) }}</span>
+            <span>{{ game.reviews|length }} review{{ 's' if game.reviews|length > 1 else '' }}</span>
+        </div>
+    </div>
+    <ul id="game-reviews">
+        {% for review in game.reviews|sort(attribute="date", reverse=true) %}
+            <li class="review">
+                <div class="review-header">
+                    <span>{{ review.user.username }}</span>
+                    <span class="stars">{{ star_rating(review.rating) }}</span>
+                    <span>{{ review.date.strftime('%B %d, %Y')}}</span>
+                </div>
+                <div class="review-body">{{ review.comment }}</div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- categories -->
+<h2><i class="fas fa-shapes header-icon"></i>Categories</h2>
+{% for cat in game.categories %}
+{{ cat }}{% if not loop.last %}, {% endif %}
+{% endfor %}
+
+<!-- tags -->
+<h2><i class="fas fa-tags header-icon"></i>Tags</h2>
+{% for tag in game.tags %}
+    <a href="{{ url_for('games_bp.browse_games_with_options', subpath=tag.tag_name) }}"><div class="button">{{ tag.tag_name }}</div></a>
+{% endfor %}
+
+<div style="height: 200px"></div>
+
+<script>
+    const reviewButton = document.querySelector('#review-button');
+    const reviewModal = document.querySelector('#review-modal');
+    const closeButton = document.querySelector('.btn-close');
+
+    // close modal function
+    const closeModal = function () {
+        reviewModal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+    };
+
+    // close the modal when the close button and overlay is clicked
+    closeButton.addEventListener("click", closeModal);
+
+    // close modal when the Esc key is pressed
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !reviewModal.classList.contains("hidden")) {
+            closeModal();
+        }
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (e) {
+        if (e.target == reviewModal) {
+            closeModal();
+        }
+    }
+
+    // open modal function
+    const openModal = function () {
+        reviewModal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+    };
+
+    // open modal event
+    // reviewButton.addEventListener("click", openModal);
+
+
+    // interactive star rating
+    const stars = document.getElementById('rating-interactive-stars');
+    const ratingValue = document.querySelector('#rating-value');
+    ratingValue.value = 0;
+
+    function calculateRating(e) {
+        const width = stars.offsetWidth;
+        const x = e.offsetX;
+        const percentage = (x / width) * 100;
+
+        const full = Math.floor(percentage / 20) + 1;
+        return full;
+    }
+
+    stars.addEventListener('mousemove', function (e) {
+        const full = calculateRating(e);
+        const fullStar = '★ '.repeat(full);
+        const emptyStar = '☆ '.repeat(5 - full);
+        this.textContent = `${fullStar}${emptyStar}`;
+    });
+
+    stars.addEventListener('click', function (e) {
+        const full = calculateRating(e);
+        ratingValue.value = full;
+    });
+
+    stars.addEventListener('mouseleave', function (e) {
+        const fullStar = '★ '.repeat(ratingValue.value);
+        const emptyStar = '☆ '.repeat(5 - ratingValue.value);
+        this.textContent = `${fullStar}${emptyStar}`;
+    });
+</script>
+
+{% endblock %}

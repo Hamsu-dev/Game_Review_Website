@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>Browse Games</title>
+
+    {{ super() }}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/browse.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chip.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search-bar.css')}}" />
+{% endblock %}
+
+{% block content %}
+
+<h2>Browse Games</h2>
+
+<!-- This stuff is used to change the search settings -->
+<div class="search-section">
+    <h3>Search for a game:</h3>
+    {% include "search.html" %}
+
+    {% if cur_search %}
+        Current search: <div class="chip info-chip">{{ cur_search }}</div>
+        <a href="{{ url_for('games_bp.browse_games_with_options', subpath=cur_subpath, genre=cur_genre) }}"><div class="button clear">Clear search</div></a><br>
+    {% endif %}
+</div>
+
+<div class="sort-by-section">
+    <h3>Sort games by:</h3>
+    <a href="{{ url_for('games_bp.browse_games_with_options', subpath='title/'+cur_tag_path, search=cur_search, genre=cur_genre) }}"><div class="button">Title</div></a>
+    <a href="{{ url_for('games_bp.browse_games_with_options', subpath='popular/'+cur_tag_path, search=cur_search, genre=cur_genre) }}"><div class="button">Popular</div></a>
+    <a href="{{ url_for('games_bp.browse_games_with_options', subpath='price/'+cur_tag_path, search=cur_search, genre=cur_genre) }}"><div class="button">Price</div></a>
+    <a href="{{ url_for('games_bp.browse_games_with_options', subpath='recent/'+cur_tag_path, search=cur_search, genre=cur_genre) }}"><div class="button">Recent</div></a><br>
+
+    {% if cur_sort %}
+        Current sort: <div class="chip info-chip">{{ cur_sort }}</div>
+        <a href="{{ url_for('games_bp.browse_games_with_options', subpath=cur_tag_path, search=cur_search, genre=cur_genre) }}"><div class="button clear">Clear sort</div></a><br>
+    {% endif %}
+</div>
+
+<div class="tag-filter-section">
+    <h3>Filter by tags:</h3>
+    <form action="{{ url_for('games_bp.add_tags', subpath=cur_subpath, search=cur_search, genre=cur_genre) }}" method="POST">
+        <label>Select from these random tags: </label>
+        {% for tag in random_tags %}
+        <label class="checkbox-label"><input type="checkbox" name="tag-{{tag}}" value="{{ tag }}"><span>{{ tag }}</span></label>
+        {% endfor %}<br>
+
+        <label>Select from all tags: </label>
+        <select name="tag-dropdown" id="tag-dropdown">
+            <option value="null-selection">Select a tag</option>
+            {% for tag in  all_tags %}
+                <option value="{{ tag }}">{{ tag }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Add tags" class="button">
+    </form>
+
+    {% if cur_tags %}
+        Current tags: 
+        {% for tag in cur_tags %}
+            <div class="chip info-chip">{{ tag }}</div>
+        {% endfor %}
+        <a href="{{ url_for('games_bp.browse_games_with_options', subpath=cur_sort, search=cur_search, genre=cur_genre) }}"><div class="button clear">Clear selected tags</div></a><br>
+    {% endif %}
+</div>
+
+<div class="genre-filter-section">
+    <h3>Filter by genre:</h3>
+    <label>Select a random genre: </label>
+    {% for genre in random_genres %}
+        <a href="{{ url_for('games_bp.set_genre', search=cur_search, subpath=cur_subpath, genre=genre) }}"><div class="button">{{genre}}</div></a>
+    {% endfor %}<br>
+
+    <form action="{{ url_for('games_bp.set_genre', search=cur_search, subpath=cur_subpath) }}" method="GET">
+        <label>Select from all genres: </label>
+        <select name="genre" id="genre-dropdown">
+            <option value="null-selection">Select a genre</option>
+            {% for genre in  all_genres %}
+                <option value="{{ genre }}">{{ genre }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Search" class="button">
+    </form>
+
+    {% if cur_genre %}
+        Current genre: <div class="chip info-chip">{{cur_genre}}</div>
+        <a href="{{ url_for('games_bp.browse_games_with_options', subpath=cur_subpath, search=cur_search) }}"><div class="button clear">Browse all</div></a>
+    {% endif %}
+</div>
+
+<!-- Results of search -->
+<div style="text-align: center;">
+    <h2>Showing {{games|length}} out of {{num_games}}</h2>
+
+    {% for game in games %}
+        <div style="width: 100%">
+            <a href="{{ url_for('game_bp.game_view', game_id=game.game_id) }}">
+                <div class="game-card">
+                    <img src="{{ game.image_url }}" alt="Game Cover">
+                    <div class="game-card-info">
+                        <h3>{{ game.title }}</h3>
+                        <b>Price: </b> ${{ game.price }}<br>
+                        <b>Release Date: </b> {{ game.release_date }}<br>
+                        <b>popularity: </b> {{ game.recommendations }}<br>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('games_bp.browse_games_with_options', subpath=cur_subpath, search=cur_search, genre=cur_genre, page=page-1) }}"><div class="button">Previous Page</div></a>
+        {% else %}
+            <div class="inactive-button">Previous Page</div>
+        {% endif %}
+
+        <b>Page: {{ page }} of: {{ max_page }}</b>
+
+        {% if page < max_page %}
+            <a href="{{ url_for('games_bp.browse_games_with_options', subpath=cur_subpath, search=cur_search, genre=cur_genre, page=page+1) }}"><div class="button">Next Page</div></a>
+        {% else %}
+            <div class="inactive-button">Next Page</div>
+        {% endif %}
+    </div>
+
+{% endblock %}

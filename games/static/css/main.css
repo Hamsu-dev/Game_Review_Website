@@ -1,0 +1,27 @@
+.search-bar {
+    font-size: 0;
+}
+
+.search-bar > label {
+    display: hidden;
+}
+
+.search-bar input {
+    border: 1px solid #5b1c95;
+    padding: 0.5em 1em 0.5em 1em;
+    font-size: 1.25rem;
+}
+
+.search-bar input[type="text"] {
+    background-color: #c8abe4;
+    color: black;
+    border-radius: 1em 0em 0em 1em;
+    border-right: 0px;
+}
+
+.search-bar input[type="submit"] {
+    background-color: #8a2be2;
+    color: #ffffff;
+    border-radius: 0em 1em 1em 0em;
+    border-left: 0px;
+}

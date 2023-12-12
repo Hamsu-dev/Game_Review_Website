@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chip.css') }}" />
+    <script src="{{ url_for('static', filename='javascript/scripts.js') }}"></script>
+    <title>CS235</title>
+{% endblock %}
+
+{% block content %}
+    <!-- <div class="bio-header">
+        <h1 class="main-h1">Bio</h1>
+        <div id="bio-content" contenteditable="true">{{ user.bio }}</div>
+        <button class="edit-bio-button" onclick="saveBio()">Edit Bio</button>
+    </div>
+
+    <div class="bio-content-container">
+        <div id="bio-content">
+            <p>{{ user.bio }}</p>
+        </div>
+    </div>
+
+    <textarea id="bio-editor" style="display: none;"></textarea> -->
+    <h1 style="text-align: center; font-size: x-large;">Welcome {{ user.username }}!</h1>
+    <button id="save-bio-button" style="display: none;" onclick="saveBio()">Save Bio</button>
+
+    <h1 class="main-h1" style="margin-top: 20px;">My Wishlist</h1>
+    {% if empty_wishlist %}
+        <p style="text-align: center; margin-top: 20px;">Your wishlist is empty!<br>Go check out some games on our <a href="{{ url_for('games_bp.browse_games') }}">browse</a> page to add games to your wishlist. </p>
+    {% else %}
+        {% for game in short_wishlist %}
+            <div class="wishlist-items">
+                <div class="game_card">
+                    <div class="game_details">
+                        <div class="img">
+                            <img src="{{game.image_url}}" alt="Game Image">
+                        </div>
+                        <div class="text">
+                            <a href="{{ url_for('game_bp.game_view', game_id=game.game_id) }}"><h2>{{ game.title }}</h2></a>
+                            <span>Released: {{ game.release_date }}</span><br>
+                            <span>Developer: {{ game.developer }}</span><br>
+                            <span>Price: ${{ game.price }}</span>
+                        </div>
+                    </div>
+                    <div class="game_score">
+                        <form method="POST" action="{{ url_for('wishlist_bp.remove_from_wishlist', game_id = game.game_id) }}">
+                            {{ form.csrf_token }}
+                            <button type="submit" class="chip button">Remove from wishlist</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <p style="text-align: center; margin-top: 20px;"><a href="{{ url_for('wishlist_bp.wishlist')}}">Click here</a> to view your full wishlist!</p>
+    {% endif %}
+
+    <h1 class="main-h1">My Game Reviews</h1>
+    {% if user.reviews|length == 0 %}
+        <p style="text-align: center; margin-top: 20px;">You have no reviews!<br>Go review some games on our <a href="{{ url_for('games_bp.browse_games') }}">browse</a> page and they will appear here.</p>
+    {% else %}
+        {% for review in user.reviews %}
+            <div class="game_card">
+                <div class="game_details">
+                    <div class="img">
+                        <img src="{{review.game.image_url}}" alt="Game Image">
+                    </div>
+                    <div class="text">
+                        <h2>{{ review.game.title }}</h2>
+                        <span>{{ review.comment }}</span>
+                    </div>
+                </div>
+                <div class="game_score">
+                    <span>{{ star_rating(review.rating) }}</span><br>
+                    <span>{{ review.date.strftime('%B %d, %Y')}}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

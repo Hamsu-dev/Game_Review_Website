@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css')}}"/>
+    <title>{{ title }}</title>
+
+    {{ super() }}
+
+{% endblock %}
+
+{% block content %}
+
+<img class="background-wallpaper" src="{{ url_for('static', filename='img/wallpaper.jpg') }}" alt="Game themed wallpaper">
+<div class="auth-box">
+    <h2>{{ title }}</h2>
+
+    <form action="{{ form_url }}" method="POST">
+        {{ form.csrf_token }} <!-- Magic security token -->
+
+        <div class="form-field">
+            {{ form.username.label}}
+            {{ form.username }}
+            <div class="error">
+                {% for error in form.username.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-field">
+            {{ form.password.label}}
+            {{ form.password }}
+            <div class="error">
+                {% for error in form.password.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+.search-bar {
+    font-size: 0;
+}
+
+.search-bar > * {
+    font-size: 1rem;
+}
+
+.search-bar input {
+    border: 1px solid var(--col-button-border);
+    padding: 0.1em 1em 0.1em 1em;
+}
+
+.search-bar input[type="text"] {
+    background-color: #c8abe4;
+    color: black;
+    border-radius: 1em 0em 0em 1em;
+    border-right: 0px;
+}
+
+.search-bar input[type="submit"] {
+    background-color: var(--col-button);
+    color: var(--col-button-text);
+    border-radius: 0em 1em 1em 0em;
+    border-left: 0px;
+}

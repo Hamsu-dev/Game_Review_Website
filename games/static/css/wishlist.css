@@ -1,0 +1,153 @@
+/* Browse page */
+
+:root {
+    --col-button: #8a2be2;
+    --col-button-text: #ffffff;
+    --col-button-border: #5b1c95;
+
+    --col-button-hover: #7a1ac9;
+    --col-button-text-hover: #ffffff;
+    --col-button-border-hover: #4b107c;
+
+    --col-button-inactive: #c0c0c0;
+    --col-button-text-inactive: #ffffff;
+    --col-button-border-inactive: #a0a0a0;
+
+    --col-button-remove: #b10000;
+    --col-button-text-remove: #ffffff;
+    --col-button-border-remove: #700000;
+
+    --col-button-remove-hover: #880000;
+    --col-button-text-remove-hover: #ffffff;
+    --col-button-border-remove-hover: #530000;
+
+
+    --col-check: #e26e2b;
+    --col-check-text: #ffffff;
+    --col-check-border: #a44a1e;
+
+    --col-check-hover: #d25e29;
+    --col-check-text-hover: #ffffff;
+    --col-check-border-hover: #94421c;
+
+    --col-check-selected: #ffdbc7;
+    --col-check-text-selected: #e26e2b;
+    --col-check-border-selected: #a44a1e;
+
+
+    --col-card-border: var(--col-button-border);
+    --width-card-image: 400px;
+}
+
+/* Search/filter stuff  */
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-label span {
+    display:inline-block;
+    padding: 0.1em 1em 0.1em 1em;
+    border: 2px solid var(--col-check-border);
+    border-radius: 1em;
+    margin: 4px;
+    cursor: pointer;
+    color: var(--col-button-text);
+    box-shadow: 2px 2px 1px 0px var(--col-shadow);
+    background-color: var(--col-check);
+}
+
+.checkbox-label span:hover {
+    border-color: var(--col-check-border-hover);
+    background-color: var(--col-check-hover);
+    color: var(--col-check-text-hover);
+}
+
+.checkbox-label input[type="checkbox"]:checked+span {
+    border-color: var(--col-check-border-selected);
+    background-color: var(--col-check-selected);
+    color: var(--col-check-text-selected);
+}
+
+.remove_from_wishlist {
+    color: var(--col-button-text-remove);
+    border-color: var(--col-button-border-remove);
+    background-color: var(--col-button-remove);
+    display: inline-block;
+    padding: 0.1em 1em 0.1em 1em;
+    border: 1px solid;
+    border-radius: 1em;
+    margin: 4px 0px 24px 0px;
+    box-shadow: 2px 2px 1px 0px var(--col-shadow);
+}
+
+.remove_from_wishlist:hover {
+    color: var(--col-button-text-remove-hover);
+    border-color: var(--col-button-border-remove-hover);
+    background-color: var(--col-button-remove-hover);
+}
+
+form {
+    font-size: 0;
+}
+
+form > * {
+    font-size: 1rem;
+}
+
+form > select {
+    background-color: #c8abe4;
+    border: 1px solid var(--col-button-border);
+    border-right: 0px;
+    border-radius: 1em 0em 0em 1em;
+    padding: 0.1em 1em 0.1em 1em;
+}
+
+form > input[type="submit"] {
+    background-color: var(--col-button);
+    color: var(--col-button-text);
+    border-radius: 0 1em 1em 0;
+    border: 1px solid var(--col-button-border);
+    padding: 0.1em 1em 0.1em 1em;
+    border-left: 0px;
+    margin-left: 0px;
+}
+
+/* Results */
+.game-card {
+    display: inline-block;
+    border: 2px solid var(--col-card-border);
+    border-radius: 2.5rem;
+    height: fit-content;
+    margin: 1rem auto 0.25rem auto;
+    font-size: 0;
+    text-decoration: none;
+    color: black;
+    background-color: #c8abe4;
+    overflow: hidden;
+}
+
+.game-card > img {
+    display: inline-block;
+    vertical-align: middle;
+    width: var(--width-card-image);
+}
+
+.game-card-info {
+    display: inline-block;
+    padding: 0.5em;
+    font-size: 1rem;
+    /* text-align: center; */
+    text-align:left;
+    vertical-align: middle;
+    box-sizing: border-box;
+    max-width: calc(100% - var(--width-card-image));
+}
+
+.game-card-info > h3 {
+    text-decoration: underline;
+    padding-bottom: 1em;
+}
+
+.pagination {
+    margin: 1em 0em 2em 0em;
+}

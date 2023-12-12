@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}" />
+    <title>CS235</title>
+{% endblock %}
+
+
+{% block heading %}
+<section class="hero">
+    <div class="main-top">
+        <p>{{ heading  }}</p>
+    </div>
+    <img class="background-wallpaper" src="{{ url_for('static', filename='img/wallpaper.jpg') }}" alt="Game themed wallpaper">
+    <div class="hero-content">
+        <img src="{{ url_for('static', filename='img/hero.png') }}" alt="Hero Image" class="hero-image">
+        <h1>Read About Games that you enjoy</h1>
+        <!-- <div class="search-container">
+            <input type="search" placeholder="Search game title or reviewer...">
+            <select name="search-type" id="search-type">
+                <option value="game-title">Game Title</option>
+                <option value="reviewer">Reviewer</option>
+            </select>
+            <button type="submit"><i class="fas fa-search"></i> Search</button>
+        </div> -->
+        {% include "search.html" %}
+    </div>
+</section>  
+{% endblock %}
+
+
+{% block content %}
+    <h1>Welcome</h1>
+
+    This website is home to a large catalogue of games and reviews. You can search for games by title, genre, or tags. There's lots of details about the games and reviews, so you can find the perfect game for you. The story behind "Team Socks" is that in the team-building lecture, there was the question "What cool pairs of socks do you own?", and the website is built around the idea that every game has something unique to it and a special story to tell. This is a COMPSCI 235 Project by <a href="https://github.com/Uni-tato" target="_blank">Alex</a>, <a href="https://github.com/Hamsu-dev", target="_blank">Sam</a> and <a href="https://github.com/histefanhere" target="_blank">Stefan</a>.
+
+
+    <h1>Our Top Picks</h1>
+    <a href="{{ url_for('game_bp.game_view', game_id=457140) }}">
+        <div class="game_card">
+            <div class="game_details">
+                <div class="img">
+                    <img src="{{ url_for('static', filename='img/ONI.webp') }}" alt="ONI">
+                </div>
+                <div class="text">
+                    <h2>Oxygen Not Included</h2>
+                    <span>Recommended by <strong>Alex Lasenby</strong></span>
+                </div>
+            </div>
+            <div class="game_score">
+                <h4>9/10</h4>
+            </div>
+        </div>
+    </a>
+    <a href="{{ url_for('game_bp.game_view', game_id=219830) }}">
+        <div class="game_card">
+            <div class="game_details">
+                <div class="img">
+                    <img src="{{ url_for('static', filename='img/KAG.png') }}" alt="ONI">
+                </div>
+                <div class="text">
+                    <h2>King Arthur's Gold</h2>
+                    <span>Recommended by <strong>Alex Lasenby</strong></span>
+                </div>
+            </div>
+            <div class="game_score">
+                <h4>7.5/10</h4>
+            </div>
+        </div>
+    </a>
+    <a href="{{ url_for('game_bp.game_view', game_id=619150) }}">
+        <div class="game_card">
+            <div class="game_details">
+                <div class="img">
+                    <img src="{{ url_for('static', filename='img/games/whiletruelearn.png') }}" alt="while True: learn()">
+                </div>
+                <div class="text">
+                    <h2>while True: learn()</h2>
+                    <span>Recommended by <strong>Stefan Zdravkovic</strong></span>
+                </div>
+            </div>
+            <div class="game_score">
+                <h4>7/10</h4>
+            </div>
+        </div>
+    </a>
+
+
+    <!-- <h1 class="main-h1">Recent Game Reviews</h1>
+
+    <div class="row">
+        <p>There are more than <span>150</span> Game Reviews</p>
+        <a href="#">See all</a>
+    </div>
+
+    <div class="game_card">
+        <div class="game_details">
+            <div class="img">
+                <i class="fab fa-steam"></i>
+            </div>
+            <div class="text">
+                <h2>Game Title Here</h2>
+                <span>Review by <strong>Reviewer Name</strong></span>
+            </div>
+        </div>
+        <div class="game_score">
+            <h4>8.5/10</h4>
+            <span>2 days ago</span>
+        </div>
+    </div>
+    <div class="game_card">
+      <div class="game_details">
+          <div class="img">
+              <i class="fab fa-steam"></i>
+          </div>
+          <div class="text">
+              <h2>Game Title Here</h2>
+              <span>Review by <strong>Reviewer Name</strong></span>
+          </div>
+      </div>
+      <div class="game_score">
+          <h4>8.5/10</h4>
+          <span>2 days ago</span>
+      </div>
+  </div>
+  <div class="game_card">
+    <div class="game_details">
+        <div class="img">
+            <i class="fab fa-steam"></i>
+        </div>
+        <div class="text">
+            <h2>Game Title Here</h2>
+            <span>Review by <strong>Reviewer Name</strong></span>
+        </div>
+    </div>
+    <div class="game_score">
+        <h4>8.5/10</h4>
+        <span>2 days ago</span>
+    </div> -->
+</div>
+{% endblock %}

@@ -7,6 +7,13 @@ This repository contains an implementation of the domain model from Assignment 1
 
 From here on you can **choose if you want to use the provided domain model or your own implementation from CodeRunner assignment 1**. The domain model implementation may have to be extended, and you may also decide to remove or modify test cases as it suits you. 
 
+## Website Demonstration
+Click on the image below to watch the demo.
+[![Watch the game](https://github.com/Hamsu-dev/Game_Review_Website/blob/master/GameReviewWebsite_SS.png?raw=true)]([https://www.youtube.com/watch?v=7dreJEkzvno](https://www.youtube.com/watch?v=i_RB9yuH8PU&ab_channel=SamLui
+))
+
+
+
 ## Installation
 
 **Installation via requirements.txt**
